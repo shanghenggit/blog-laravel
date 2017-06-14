@@ -11,9 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index');
 
-Route::get('login','IndexController@login');
-Route::post('loginIn','IndexController@loginIn');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+// 文章管理
+Route::get('/article', 'ArticleController@index')->name('article')->middleware('auth');
+Route::get('/article/show/{id?}', 'ArticleController@show')->where('id', '[0-9]+')->name('article/show')->middleware('auth');
+Route::post('/article/edit', 'ArticleController@edit')->name('article/edit')->middleware('auth');
+Route::get('/article/delete/{id?}', 'ArticleController@delete')->where('id', '[0-9]+')->name('article/delete')->middleware('auth');
